@@ -1,0 +1,63 @@
+CREATE DATABASE db_ferrer;
+
+create table userA(
+	idu serial primary key,
+	nameu varchar(255),
+	lastnu varchar(255),
+	telepu varchar(10),
+	emailu varchar(255),
+
+	usera varchar(255),
+	passa varchar(40)
+);
+
+CREATE TABLE products(
+	idp serial primary key,
+	idu integer,
+	descriptionp varchar(255),
+	pricep decimal,
+	stockp integer,
+
+	foreign key (idu) references usera(idu)
+);
+
+CREATE PROCEDURE sp_InsertUsers(
+IN nameu varchar(255),
+IN lastnu varchar(255),
+IN telepu varchar(10),
+IN emailu varchar(255),
+IN usera varchar(255),
+IN passa varchar(255)
+)
+	AS $$
+	BEGIN
+		INSERT INTO userA("nameu", "lastnu", "telepu", "emailu", "usera", "passa")
+		VALUES(nameu, lastnu, telepu, emailu, usera, passa);
+	END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE PROCEDURE sp_InsertProducts(
+IN idu int,
+IN descriptionp varchar(255),
+IN price decimal,
+IN stockp int
+)
+	AS $$
+	BEGIN
+		insert into products("idu", "descriptionp", "pricep", "stockp")
+		VALUES(idu, descriptionp, price, stockp);
+	END;
+$$ LANGUAGE plpgsql;
+
+CREATE PROCEDURE sp_DeleteProduct(
+IN idpr int,
+IN idus int
+)
+	AS $$
+	BEGIN
+		DELETE FROM products
+		WHERE idp = idpr and idu = idus; 
+	END;
+$$ LANGUAGE plpgsql;
+
